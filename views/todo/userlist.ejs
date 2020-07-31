@@ -1,0 +1,53 @@
+<%- include ('../layouts/header') %>
+
+<% if (messages.error) { %>
+ <p style="color:red"><%- messages.error %></p>
+<% } %>
+
+<% if (messages.success) { %>
+ <p style="color:green"><%- messages.success %></p>
+<% } %>
+
+<div>
+    <a href="/tasks/getAllTasks">All Tasks</a>
+    <a href="/tasks/addNewTask">Add New Task</a>
+</div>
+<br><br><br>
+<table border=1>
+ <tr>
+  <th>id</th>
+  <th>TaskName</th>
+  <th>creation_time</th>
+  <th>Edit_time</th>
+  <th>expiry</th>
+  <th>completion_status</th>
+  <th>created_by</th>
+ </tr> 
+
+ <% if (data) { %>
+ <% data.forEach(function(task){ %>
+  <tr>
+   <td><%= task.id %></td>
+   <td><%= task.task_name %>
+   <td><%= task.creation_time %></td>
+   <td><%= task.edit_time %></td>
+   <td><%= task.expiry %></td>
+   <td><%= task.completion_status %></td>
+   <td><%= task.created_by %></td>
+   <td>
+    <td>
+        <div style="float:left">
+            <a href='/tasks/updateTask/<%= task.id %>'>Edit</a> &nbsp;                            
+            <form method="post" action="/tasks/deleteTask/<%= task.id %>" style="float:right">
+                <input type="submit" name="delete" value='Delete' onClick="return confirm('Are you sure you want to delete?')" />
+                <input type="hidden" name="_method" value="DELETE" />
+            </form>
+        </div>
+    </td>
+   </td>
+  </tr>
+ <% }) %>
+ <% } %>
+</table>
+
+<%- include ('../layouts/footer') %>

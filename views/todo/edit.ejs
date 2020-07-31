@@ -1,0 +1,38 @@
+<!--
+including header content which is common for all pages
+-->
+<%- include ('../layouts/header') %>   
+        
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+<% } %>
+ 
+<% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+<% } %>
+ 
+<form action="/tasks/updateTask/<%= id %>" method="post" name="form1">
+    <table width="25%" border="0">
+        <tr>
+            <td>TaskName</td>
+            <td><input type="text" name="task_name" id="task_name" value="<%= task_name %>"></td>
+           </tr>  
+            <td>ExpiryDate</td>
+            <td><input type="text" name="expiry" id="expiry" value="<%= expiry%>"></td>
+           </tr>
+           <tr>
+             <td>completion_status</td>
+             <td><input type="text" name="completion_status" id="completion_status" value="<%= completion_status %>" placeholder="yyyy-mm-dd"></td>
+            </tr> 
+        <tr> 
+            <td></td>
+            <td><input type="submit" name="Submit" value="Edit" /></td>
+        </tr>
+    </table>
+    <input type="hidden" name="_method" value="PUT" />
+</form>
+ 
+<!--
+including footer content which is common for all pages
+-->
+<%- include ('../layouts/footer') %>

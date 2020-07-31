@@ -1,0 +1,33 @@
+<%- include ('../layouts/header.ejs') %>
+
+<% if (messages.error) { %>
+    <p style="color:red"><%- messages.error %></p>
+    <% } %>
+    
+    <% if (messages.success) { %>
+    <p style="color:green"><%- messages.success %></p>
+    <% } %>
+
+<form action="/tasks/userRegistration" method="post" name="form1">
+ <table>
+  <tr>
+   <td>Name</td>
+   <td><input type="text" name="name" id="name" value="<%= name %>"></td>
+  </tr>  
+   <td>Email</td>
+   <td><input type="text" name="email" id="email" value="<%= email %>"></td>
+  </tr>
+  <tr>
+    <td>password</td>
+    <td><input type="password" name="password" id="password" value="<%= password %>"></td>
+   </tr>  
+   <tr>  
+  <tr>
+   <td></td>
+   <td><input type="submit" name="Submit" value="Register"></td>
+  </tr>
+  
+ </table>
+</form>
+
+<%- include ('../layouts/footer.ejs') %>

@@ -1,0 +1,42 @@
+<%- include ('../layouts/header') %>
+
+<% if (messages.error) { %>
+ <p style="color:red"><%- messages.error %></p>
+<% } %>
+
+<% if (messages.success) { %>
+ <p style="color:green"><%- messages.success %></p>
+<% } %>
+
+<div>
+    <a href="/tasks/getAllTasks">All Tasks</a>
+    <a href="/tasks/addNewTask">Add New Task</a>
+</div>
+<br><br><br>
+<table border=1>
+ <tr>
+  <th>id</th>
+  <th>TaskName</th>
+  <th>creation_time</th>
+  <th>Edit_time</th>
+  <th>expiry</th>
+  <th>completion_status</th>
+  <th>created_by</th>
+ </tr> 
+
+ <% if (data) { %>
+ <% data.forEach(function(task){ %>
+  <tr>
+   <td><%= task.id %></td>
+   <td><%= task.task_name %>
+   <td><%= task.creation_time %></td>
+   <td><%= task.edit_time %></td>
+   <td><%= task.expiry %></td>
+   <td><%= task.completion_status %></td>
+   <td><%= task.created_by %></td>
+     </tr>
+ <% }) %>
+ <% } %>
+</table>
+
+<%- include ('../layouts/footer') %>
