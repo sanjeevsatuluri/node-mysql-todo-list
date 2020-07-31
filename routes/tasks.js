@@ -1,11 +1,7 @@
 var express = require('express')
-// var mysql = require('mysql')
-// const config = require('../config.js')
 var app = express()
 
-// SHOW ADD USER FORM
 app.get('/login', function (req, res, next) {
-    // render to views/user/add.ejs
     res.render('todo/login', {
         title: 'Login',
         email: '',
@@ -23,7 +19,6 @@ app.post('/userLogin', function (req, res) {
             var sql = "call sp_userLogin('" + req.body.email + "','" + req.body.password + "')";
             var sql2 = "call sp_getTasks('" + req.body.email + "')";
             conn.query(sql, function (err, rows, fields) {
-                //if(err) throw err
                 if (err) {
                     req.flash('error', err)
                     res.render('todo/login', {
@@ -32,10 +27,8 @@ app.post('/userLogin', function (req, res) {
                         password: ''
                     })
                 } else {
-                    // render to views/user/list.ejs template file
                     if (rows[0][0].isValid == 1) {
                         conn.query(sql2, function (err, rows, fields) {
-                            //if(err) throw err
                             if (err) {
                                 req.flash('error', err)
                                 res.render('todo/login', {
@@ -44,7 +37,6 @@ app.post('/userLogin', function (req, res) {
                                     password: ''
                                 })
                             } else {
-                                // render to views/user/list.ejs template file
                                 res.render('todo/userlist', {
                                     title: 'Your Task List',
                                     data: rows[0]
@@ -67,7 +59,6 @@ app.post('/userLogin', function (req, res) {
 });
 
 app.get('/registration', function (req, res, next) {
-    // render to views/user/add.ejs
     res.render('todo/registration', {
         title: 'Registration',
         name: '',
@@ -132,7 +123,6 @@ app.get('/getAllTasks', function (req, res, next) {
     req.getConnection(function (error, conn) {
         let sql = "call sp_getAlltasks()";
         conn.query(sql, function (err, rows, fields) {
-            //if(err) throw err
             if (err) {
                 req.flash('error', err)
                 res.render('todo/list', {
@@ -140,7 +130,6 @@ app.get('/getAllTasks', function (req, res, next) {
                     data: ''
                 })
             } else {
-                // render to views/user/list.ejs template file
                 res.render('todo/list', {
                     title: 'All Tasks List',
                     data: rows[0]
@@ -161,13 +150,13 @@ app.get('/addNewTask', function (req, res, next) {
 });
 
 app.post('/addNewTask', function (req, res, next) {
-    req.assert('task_name', 'Task Name is required').notEmpty() //task_name,expiry,completion_status,created_by
+    req.assert('task_name', 'Task Name is required').notEmpty()
     req.assert('expiry', 'Expiry date is required').notEmpty()
     req.assert('completion_status', 'status of the Task is required').notEmpty()
     req.assert('created_by', 'creatorName is required').notEmpty()
     var errors = req.validationErrors()
 
-    if (!errors) {   //No errors were found.  Passed Validation!
+    if (!errors) {
         req.getConnection(function (error, conn) {
             var sql = "call sp_insertTask('" + req.body.task_name + "','" + req.body.expiry + "','" + req.body.completion_status + "','" + req.body.created_by + "')";
             conn.query(sql, function (err, result) {
@@ -202,7 +191,7 @@ app.post('/addNewTask', function (req, res, next) {
             })
         })
     }
-    else {   //Display errors to user
+    else {
         var error_msg = ''
         errors.forEach(function (error) {
             error_msg += error.msg + '<br>'
@@ -223,14 +212,10 @@ app.get('/updateTask/(:id)', function (req, res, next) {
         let sql = "call sp_getTasksById('" + req.params.id + "')";;
         conn.query(sql, function (err, rows, fields) {
             if (err) throw err
-
-            // if user not found
             if (rows.length <= 0) {
                 req.flash('error', 'User not found with id = ' + req.params.id)
-                //res.redirect('/tasks')
             }
-            else { // if user found
-                // render to views/user/edit.ejs template file
+            else { 
                 res.render('todo/edit', {
                     title: 'Edit Task',
                     id: rows[0][0].id,
@@ -263,11 +248,8 @@ app.put('/updateTask/(:id)', function (req, res, next) {
             });
             let sql = "call sp_updateTask(" + req.params.id + ",'" + req.body.task_name + "','" + req.body.expiry + "','" + req.body.completion_status + "')";
             conn.query(sql, function (err, result) {
-                //if(err) throw err
                 if (err) {
                     req.flash('error', err)
-
-                    // render to views/user/add.ejs
                     res.render('todo/edit', {
                         title: 'Edit Task',
                         id: req.params.id,
